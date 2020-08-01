@@ -1,0 +1,80 @@
+version: "3"
+services:
+    frontend:
+      build:
+        context: .
+        dockerfile: ../../frontend/event-feedback/docker/dockerfile.dev
+      volumes:
+        - ../../frontend/event-feedback:/usr/app
+      ports:
+        - 3000:3000
+      networks:
+        network-feedbackevent:
+          ipv4_address: 172.70.0.7
+    backend:
+        build:
+            context: .
+            dockerfile: docker/dockerfile.dev
+        volumes:
+            - .:/var/www/html
+            - /var/www/vendor
+        ports:
+            - 8080:80
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.8
+    redis:
+        image: redis
+        ports:
+            - 6379:6379
+        command: redis-server --requirepass seila123  --appendonly yes
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.6
+    prometheus:
+        image: prom/prometheus:latest
+        volumes:
+            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+            - ./prometheus_db:/var/lib/prometheus
+        command: --config.file=/etc/prometheus/prometheus.yml
+        ports:
+            - '9090:9090'
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.9
+    grafana:
+        image: grafana/grafana
+        ports:
+            - 3200:3000
+        depends_on:
+            - prometheus
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.12
+    node-exporter:
+        image: prom/node-exporter
+        ports:
+            - '9100:9100'
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.10
+    postgres:
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: "app"
+            POSTGRES_USER: "user"
+            POSTGRES_PASSWORD: "rootPassword"
+
+        networks:
+            network-feedbackevent:
+                ipv4_address: 172.70.0.15
+networks:
+    network-feedbackevent:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.70.0.0/24
+
