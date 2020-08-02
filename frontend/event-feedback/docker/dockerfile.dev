@@ -1,11 +1,14 @@
 FROM node:14.0-slim
 
 WORKDIR /usr/app
+RUN  apt update &&  apt-get install g++ build-essential python python3 -y
 
-COPY . .
+COPY ./frontend/event-feedback/ .
 
 RUN yarn install
 ENV  NUXT_HOST 0.0.0.0
 ENV  NUXT_PORT 3000
+
+RUN ls -la
 
 CMD  yarn dev

@@ -3,23 +3,25 @@ services:
     frontend:
       build:
         context: .
-        dockerfile: ../../frontend/event-feedback/docker/dockerfile.dev
+        dockerfile: ./frontend/event-feedback/docker/dockerfile.dev
       volumes:
-        - ../../frontend/event-feedback:/usr/app
+        - ./frontend/event-feedback:/usr/app
       ports:
         - 3000:3000
+      command: ls -la
       networks:
         network-feedbackevent:
           ipv4_address: 172.70.0.7
     backend:
         build:
             context: .
-            dockerfile: docker/dockerfile.dev
+            dockerfile: ./server/event-feedback/docker/dockerfile.dev
         volumes:
-            - .:/var/www/html
+            - ./server/event-feedback:/var/www/html/
             - /var/www/vendor
         ports:
             - 8080:80
+        command: ls -la
         networks:
             network-feedbackevent:
                 ipv4_address: 172.70.0.8
@@ -34,8 +36,8 @@ services:
     prometheus:
         image: prom/prometheus:latest
         volumes:
-            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-            - ./prometheus_db:/var/lib/prometheus
+            - ./server/event-feedback/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+            - ./server/event-feedback/prometheus_db:/var/lib/prometheus
         command: --config.file=/etc/prometheus/prometheus.yml
         ports:
             - '9090:9090'
