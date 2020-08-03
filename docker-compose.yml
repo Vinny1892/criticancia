@@ -6,9 +6,9 @@ services:
         dockerfile: ./frontend/event-feedback/docker/dockerfile.dev
       volumes:
         - ./frontend/event-feedback:/usr/app
+        - /usr/app/node_modules
       ports:
         - 3000:3000
-      command: ls -la
       networks:
         network-feedbackevent:
           ipv4_address: 172.70.0.7
@@ -17,11 +17,10 @@ services:
             context: .
             dockerfile: ./server/event-feedback/docker/dockerfile.dev
         volumes:
-            - ./server/event-feedback:/var/www/html/
-            - /var/www/vendor
+            - ./server/event-feedback:/var/www/html
+            - /var/www/html/vendor
         ports:
             - 8080:80
-        command: ls -la
         networks:
             network-feedbackevent:
                 ipv4_address: 172.70.0.8

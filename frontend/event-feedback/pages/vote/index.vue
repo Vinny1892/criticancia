@@ -11,7 +11,7 @@
           prominent
           transition="scale-transition"
         >
-          {{ msg }}
+          Avaliação salva com sucesso
         </v-alert>
       </v-col>
     </v-row>
@@ -40,12 +40,9 @@ export default {
   },
   computed: {
     showAlert: {
-      get () { return this.$store.getters.showAlert.showAlert }
-    },
-    msg () {
-      return this.$store.getters.showAlert.message
+      get () { return this.$store.getters.showAlert.showAlert },
+      set (val) { this.$store.commit('showAlert', val) }
     }
-
   }
 }
 </script>

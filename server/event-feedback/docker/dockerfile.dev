@@ -1,4 +1,4 @@
-FROM php:7.4-cli
+FROM php:7.3-cli
 
 RUN apt update && apt install  libzip-dev curl gcc make autoconf libc-dev pkg-config git libcurl4 libcurl4-openssl-dev libpq-dev -y
 
@@ -23,9 +23,7 @@ WORKDIR /var/www/html
 COPY ./server/event-feedback/ .
 
 
-RUN composer install
-
-RUN ls -la
+RUN composer install 
 
 
-CMD php artisan serve --host 0.0.0.0 --port 80
+ CMD  php  artisan serve --host 0.0.0.0 --port 80 

@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,3 +10,4 @@
 |
 */
 Route::get('/' , "VoteController@testeRedis");
+Route::get('/metrics' , "PrometheusController@showMetrics");
