@@ -1,0 +1,5 @@
+- name: "Provising Nginx"
+  hosts: "all"
+  become: yes
+  roles:
+    - role: nginx
