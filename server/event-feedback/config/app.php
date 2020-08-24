@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers
          */
-        TrayLabs\InfluxDB\Providers\ServiceProvider::class,
         /*
          * Application Service Providers...
          */

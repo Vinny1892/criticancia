@@ -1,0 +1,41 @@
+FROM php:7.4-fpm
+
+WORKDIR /var/www/html
+
+RUN apt update && apt install git  unzip nginx libonig-dev \
+    libxml2-dev \
+    libmcrypt-dev \
+    libzip-dev \
+    libpq-dev   \
+    htop \
+    vim -y
+
+RUN pecl install igbinary
+RUN pecl install redis
+RUN docker-php-ext-enable igbinary
+RUN docker-php-ext-enable redis
+RUN docker-php-ext-install pgsql
+RUN docker-php-ext-enable pgsql
+RUN docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-enable pdo_pgsql
+
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+
+
+
+
+COPY server/nginx/*.conf  /etc/nginx/conf.d/
+
+
+COPY ./server/event-feedback/ .
+
+RUN composer install
+
+#RUN php artisan migrate:fresh
+
+EXPOSE 80
+
+#RUN ls -la
+
+CMD ["nginx","-g", "daemon off;"]
