@@ -2,9 +2,6 @@ version: "3"
 services:
     frontend:
         image: vinny1892/eventfeedback-frontend
-        volumes:
-            - ./frontend/event-feedback:/usr/app
-            - /usr/app/node_modules
         ports:
             - 3000:3000
         deploy:
@@ -28,9 +25,6 @@ services:
 
     backend:
         image: vinny1892/eventfeedback-backend
-        volumes:
-            - ./server/event-feedback:/var/www/html
-            - /var/www/html/vendor
         ports:
             - 8080:80
         depends_on:
@@ -57,34 +51,10 @@ services:
         image: redis
         ports:
             - 6379:6379
-        command: redis-server --requirepass seila123  --appendonly yes
-        networks:
-            - feedbackevent
-    prometheus:
-        image: prom/prometheus:latest
-        volumes:
-            - ./server/event-feedback/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-            - ./server/event-feedback/prometheus_db:/var/lib/prometheus
-        command: --config.file=/etc/prometheus/prometheus.yml
-        ports:
-            - '9090:9090'
-        networks:
-            - feedbackevent
-    grafana:
-        image: grafana/grafana
-        ports:
-            - 3200:3000
-        depends_on:
-            - prometheus
         deploy:
             placement:
                 constraints: [node.role == manager]
-        networks:
-            - feedbackevent
-    node-exporter:
-        image: prom/node-exporter
-        ports:
-            - '9100:9100'
+        command: redis-server --requirepass seila123  --appendonly yes
         networks:
             - feedbackevent
     postgres:
@@ -93,8 +63,8 @@ services:
             - 5432:5432
         environment:
             POSTGRES_DB: "app"
-            POSTGRES_USER: "user"
-            POSTGRES_PASSWORD: "rootPassword"
+            POSTGRES_USER: "root"
+            POSTGRES_PASSWORD: "example"
         deploy:
             placement:
                 constraints: [node.role == manager]

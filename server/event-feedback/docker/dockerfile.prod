@@ -8,6 +8,7 @@ RUN apt update && apt install git  unzip nginx libonig-dev \
     libzip-dev \
     libpq-dev   \
     htop \
+    postgresql-client \
     vim -y
 
 RUN pecl install igbinary
@@ -31,11 +32,9 @@ COPY server/nginx/*.conf  /etc/nginx/conf.d/
 COPY ./server/event-feedback/ .
 
 RUN composer install
+RUN chmod +x docker/wait-for-it.sh
 
 #RUN php artisan migrate:fresh
-
 EXPOSE 80
-
-#RUN ls -la
-
-CMD ["nginx","-g", "daemon off;"]
+CMD ["docker/wait-for-it.sh", "postgres", "root", "example", "nginx -g daemon off;"]
+#CMD ["nginx","-g", "daemon off;"]
