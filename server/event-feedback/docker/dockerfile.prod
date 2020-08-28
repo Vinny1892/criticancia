@@ -53,6 +53,7 @@ COPY ./server/event-feedback/ .
 RUN composer install
 RUN chmod 775   -R  storage 
 #RUN chmod 775 -R  boostrap/cache/   
+RUN chown nginx -R .
 RUN chmod +x docker/wait-for-it.sh
 
 #RUN php artisan migrate:fresh
