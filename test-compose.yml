@@ -1,0 +1,39 @@
+version: "3"
+services:
+    frontend:
+        image: vinny1892/eventfeedback-frontend
+        ports:
+            - 3000:3000
+        networks:
+            - feedbackevent
+
+    backend:
+        image: vinny1892/eventfeedback-backend
+        ports:
+            - 8080:80
+        depends_on:
+            - postgres
+        networks:
+            - feedbackevent
+    redis:
+        image: redis
+        ports:
+            - 6379:6379
+        deploy:
+            placement:
+                constraints: [node.role == manager]
+        command: redis-server --requirepass seila123  --appendonly yes
+        networks:
+            - feedbackevent
+    postgres:
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: "app"
+            POSTGRES_USER: "user"
+            POSTGRES_PASSWORD: "rootPassword"
+        networks:
+            - feedbackevent
+networks:
+    feedbackevent:

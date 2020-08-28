@@ -3,7 +3,7 @@ services:
     frontend:
         image: vinny1892/eventfeedback-frontend
         ports:
-            - 3000:3000
+            - 80:3000
         deploy:
             mode: replicated
             replicas: 4
@@ -63,8 +63,8 @@ services:
             - 5432:5432
         environment:
             POSTGRES_DB: "app"
-            POSTGRES_USER: "root"
-            POSTGRES_PASSWORD: "example"
+            POSTGRES_USER: "user"
+            POSTGRES_PASSWORD: "rootPassword"
         deploy:
             placement:
                 constraints: [node.role == manager]

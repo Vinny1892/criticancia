@@ -5,7 +5,6 @@ set -e
 host="$1"
 PG_USER="$2"
 POSTGRES_PASSWORD="$3"
-cmd="$4"
   
 until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$host" -U $PG_USER  -d "app" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
@@ -13,5 +12,8 @@ until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$host" -U $PG_USER  -d "app" -c '\q
 done
   
 >&2 echo "Postgres is up - executing command"
-php artisan migrate:fresh
-exec   $cmd
+php artisan migrate
+echo "Starting PHP 7.4"
+php-fpm7
+echo "Executing Nginx"
+exec nginx 
