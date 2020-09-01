@@ -70,5 +70,13 @@ services:
                 constraints: [node.role == manager]
         networks:
             - feedbackevent
+volumes:
+    postgres:
+        driver: rexray
+    app-backend:
+        driver: rexray
+    app-frontend:
+        driver: rexray
 networks:
     feedbackevent:
+    
