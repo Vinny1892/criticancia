@@ -55,7 +55,8 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    ['@nuxtjs/dotenv', { systemvars: true }]
   ],
   /*
   ** Nuxt.js modules
@@ -69,7 +70,10 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:8080/api'
+    baseURL: `{process.env.API_URL}`
+  },
+  publicRuntimeConfig: {
+    baseURL: process.env.API_URL
   },
   /*
   ** vuetify module configuration
