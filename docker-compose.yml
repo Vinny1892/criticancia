@@ -10,7 +10,7 @@ services:
       ports:
         - 3000:3000
       environment: 
-        - API_URL=http://localhost:8080
+        - API_URL=http://192.168.0.122:8080
       networks:
         network-feedbackevent:
           ipv4_address: 172.70.0.7

@@ -4,6 +4,8 @@ services:
         image: vinny1892/eventfeedback-frontend
         ports:
             - 80:3000
+        environment:
+            - API_URL= ip:32566
         deploy:
             mode: replicated
             replicas: 4
@@ -26,7 +28,7 @@ services:
     backend:
         image: vinny1892/eventfeedback-backend
         ports:
-            - 8080:80
+            - 32566:80
         depends_on:
             - postgres
         deploy:

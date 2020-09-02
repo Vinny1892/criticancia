@@ -56,7 +56,8 @@ export default {
         let response;
         try{
             this.loading = true;
-             response =  await this.$axios.post('api/' , {"vote" : this.nota } );
+            console.log(this.$axios.defaults.baseURL);
+            response =  await this.$axios.post('api/' , {"vote" : this.nota } );
             this.loading = false;
             if( response.status  === 200 ){
               this.$store.commit("showAlert" , true);
