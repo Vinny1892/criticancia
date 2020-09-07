@@ -27,7 +27,7 @@
             </v-btn>
           </v-col>
           <v-col cols="12" lg="2" md="4" sm="4">
-            <v-btn :loading="loading" color="amber" @click="submit">
+            <v-btn color="amber" @click="submit">
               Votar
             </v-btn>
           </v-col>
@@ -53,17 +53,15 @@ export default {
   }),
   methods:{
       async submit(){
+        let response;
         try{
             this.loading = true;
-            let response =  await this.$axios.post('/' , {"vote" : this.nota } );
+            console.log(this.$axios.defaults.baseURL);
+            response =  await this.$axios.post('api/' , {"vote" : this.nota } );
             this.loading = false;
-            const payload = {};
             if( response.status  === 200 ){
-              payload.type = "success"
-              payload.message = "Voto computado com sucesso"
+              this.$store.commit("showAlert" , true);
             }
-            payload.alert = true;
-            this.$store.commit("showAlert" , payload);
         }catch(e){
             return this.$nuxt.error({ statusCode: 500 });
         }

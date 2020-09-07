@@ -1,16 +1,9 @@
 export const state = () => ({
-  showAlert: false,
-  type: '',
-  message: ''
-
+  showAlert: false
 })
 
 export const mutations = {
-  showAlert (state, payload) {
-    state.showAlert = payload.alert
-    state.type = payload.type
-    state.message = payload.message
-  }
+  showAlert (state, payload) { state.showAlert = payload }
 }
 
 export const getters = {

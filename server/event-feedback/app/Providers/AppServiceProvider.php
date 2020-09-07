@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use InfluxDB\Client as InfluxClient;
-use InfluxDB\Database as InfluxDB;
-use InfluxDB\Driver\UDP;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,23 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(InfluxDB::class, function($app) {
-            $client = new InfluxClient(
-                config('influxdb.host'),
-                config('influxdb.port'),
-                config('influxdb.username'),
-                config('influxdb.password'),
-                config('influxdb.ssl'),
-                config('influxdb.verifySSL'),
-                config('influxdb.timeout')
-            );
-            if (config('influxdb.udp.enabled') === true) {
-                $client->setDriver(new UDP(
-                    $client->getHost(),
-                    config('influxdb.udp.port')
-                ));
-            }
-            return $client->selectDB(config('influxdb.dbname'));
+        $this->app->singleton(\Prometheus\CollectorRegistry::class, function($app) {
+            $registry = new \Prometheus\CollectorRegistry(new \Prometheus\Storage\Redis(['host'=> 'redis' , 'password' => 'seila123']));
+            return $registry;
         });
     }
 
