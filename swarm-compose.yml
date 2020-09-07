@@ -4,8 +4,9 @@ services:
         image: vinny1892/eventfeedback-frontend
         ports:
             - 80:3000
-        environment:
-            - API_URL= ip:32566
+        config:
+            - source: config_appfrontend
+              target: /usr/src/app/
         deploy:
             mode: replicated
             replicas: 4
@@ -72,7 +73,12 @@ services:
                 constraints: [node.role == manager]
         networks:
             - feedbackevent
+configs:
+    config_prometheus:
+        file: /opt/app/criticancia
 volumes:
+    env_frontend:
+        driver: rexray
     postgres:
         driver: rexray
     app-backend:
